@@ -1,0 +1,4432 @@
+<DynaMind>
+	<Info Version="0.5"/>
+<DynaMindCore>
+	<Settings>
+		<EPSG value="32755"/>
+		<WorkingDir value="/tmp/dynamind"/>
+		<KeepSystems value="0"/>
+	</Settings>
+	<Nodes>
+		<RootNode>
+			<UUID value="0"/>
+		</RootNode>
+		<Node>
+			<ClassName value="GDALHotStarter"/>
+			<UUID value="58259472"/>
+			<Name value=""/>
+			<GroupUUID value="0"/>
+			<DebugMode value="0"/>
+			<parameter name="hot_start_database">
+				<![CDATA[../../cloud/water_supply/water_supply/hotstart/export.sqlite]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMLoopGroup"/>
+			<UUID value="55969264"/>
+			<Name value="development_loop"/>
+			<GroupUUID value="0"/>
+			<DebugMode value="0"/>
+			<parameter name="Runs">
+				<![CDATA[10]]>
+			</parameter>
+			<parameter name="writeStreams">
+				<![CDATA[city*|*]]>
+			</parameter>
+			<parameter name="readStreams">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="56826448"/>
+			<Name value="bio physical model"/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[ou*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="56839232"/>
+			<Name value="Storage volume (with max 1811 GL)"/>
+			<GroupUUID value="56826448"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.dam_volume]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[d<1800 ? (d-a)+i : 1811]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*city.MEL_total_demand_savings*||*d*|*city.dam_volume*||*i*|*city.inflow*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="56807952"/>
+			<Name value="simulation parameter"/>
+			<GroupUUID value="0"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[out*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[rwht_incentive::equation*|*rwht_incentive*||*rwht_incentive_rate::equation*|*rwht_incentive_rate*||*rwht_prefered_volume::equation*|*rwht_prefered_volume*||*rwht_uptake_rate::equation*|*rwht_uptake*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="56651168"/>
+			<Name value="hh_max"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.hh_max]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0.002]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="56654976"/>
+			<Name value="rwht_uptake_rate"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.rwht_uptake_rate]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="56660208"/>
+			<Name value="rwht_prefered_volume"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.rwht_prefered_volume]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[2]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58273120"/>
+			<Name value="Design Rain"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.design_rain]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[{1.09331, 1.37038, 1.94696, 7.33579, 0.924736, 0.809351, 0.724498, 0.658988, 0.606598, 0.563568, 0.527474, 0.496684
+}]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58278992"/>
+			<Name value="flood_resilience"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.flood_resilience]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALImportData"/>
+			<UUID value="58283984"/>
+			<Name value="zoning"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="source">
+				<![CDATA[PG:dbname=scotchmans_creek host=www.dance4water.org port=5432 user=postgres password=rejudo01]]>
+			</parameter>
+			<parameter name="layer_name">
+				<![CDATA[wsc_masterplan]]>
+			</parameter>
+			<parameter name="view_name">
+				<![CDATA[zone]]>
+			</parameter>
+			<parameter name="import_attribute_as">
+				<![CDATA[]]>
+			</parameter>
+			<parameter name="append">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="epsg_from">
+				<![CDATA[4283]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58287696"/>
+			<Name value="rwht_incentive"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.rwht_incentive]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58293520"/>
+			<Name value=""/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[restricted_zone.restricted]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[STRING]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA["restricted"]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58298768"/>
+			<Name value="cc_max"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.cc_max]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58303648"/>
+			<Name value="rwht_incentive_rate"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.rwht_incentive_rate]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALImportData"/>
+			<UUID value="58571024"/>
+			<Name value=""/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="source">
+				<![CDATA[PG:dbname=scotchmans_creek host=www.dance4water.org port=5432 user=postgres password=rejudo01]]>
+			</parameter>
+			<parameter name="layer_name">
+				<![CDATA[restrictions]]>
+			</parameter>
+			<parameter name="view_name">
+				<![CDATA[restricted_zone]]>
+			</parameter>
+			<parameter name="import_attribute_as">
+				<![CDATA[]]>
+			</parameter>
+			<parameter name="append">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="epsg_from">
+				<![CDATA[4283]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58574672"/>
+			<Name value="increase year"/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.year]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[y+1]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[y*|*city.year*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="58580288"/>
+			<Name value="Agents decions"/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[ou*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMLoopGroup"/>
+			<UUID value="58667552"/>
+			<Name value="water_demand_assessment"/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="Runs">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="writeStreams">
+				<![CDATA[city*|*]]>
+			</parameter>
+			<parameter name="readStreams">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="58755264"/>
+			<Name value="technology_development"/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[out*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMLoopGroup"/>
+			<UUID value="58843296"/>
+			<Name value="pre assessment water demand model"/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="Runs">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="writeStreams">
+				<![CDATA[city*|*]]>
+			</parameter>
+			<parameter name="readStreams">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALJoinNearestNeighbour"/>
+			<UUID value="58932736"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="leadingViewName">
+				<![CDATA[parcel]]>
+			</parameter>
+			<parameter name="linkViewName">
+				<![CDATA[station]]>
+			</parameter>
+			<parameter name="max_distance">
+				<![CDATA[10000000]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58938384"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.end_date]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[STRING]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[num2str(year+1)// "-Jan-01 00:00:00"]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[year*|*city.year*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="LoadDAnCETimeseries"/>
+			<UUID value="58944912"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="host">
+				<![CDATA[www.dance4water.org]]>
+			</parameter>
+			<parameter name="database">
+				<![CDATA[danceplatform]]>
+			</parameter>
+			<parameter name="username">
+				<![CDATA[postgres]]>
+			</parameter>
+			<parameter name="password">
+				<![CDATA[rejudo01]]>
+			</parameter>
+			<parameter name="start">
+				<![CDATA[city.start_date]]>
+			</parameter>
+			<parameter name="end">
+				<![CDATA[city.end_date]]>
+			</parameter>
+			<parameter name="deltaT">
+				<![CDATA[86400]]>
+			</parameter>
+			<parameter name="from_city">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="view_name">
+				<![CDATA[station]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="RainWaterHarvestingOptions"/>
+			<UUID value="58948976"/>
+			<Name value="rwht options"/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="storage_volume">
+				<![CDATA[2*|*5*|*10*|*]]>
+			</parameter>
+			<parameter name="rwht_view_name">
+				<![CDATA[rwht_option]]>
+			</parameter>
+			<parameter name="start_date">
+				<![CDATA[2000-Jan-01 00:00:00]]>
+			</parameter>
+			<parameter name="end_date">
+				<![CDATA[2001-Jan-01 00:00:00]]>
+			</parameter>
+			<parameter name="timestep">
+				<![CDATA[86400]]>
+			</parameter>
+			<parameter name="date_from_global">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="global_viewe_name">
+				<![CDATA[global_viewe_name]]>
+			</parameter>
+			<parameter name="start_date_name">
+				<![CDATA[start_date]]>
+			</parameter>
+			<parameter name="end_data_name">
+				<![CDATA[end_date]]>
+			</parameter>
+			<parameter name="add_time_series_data">
+				<![CDATA[1]]>
+			</parameter>
+			<Filter>
+			<view_name>
+				<![CDATA[parcel]]>
+			</view_name>
+			<attribtue_filter>
+				<![CDATA[persons > 0 and area < 2500 and (rwht_id is null or rwht_id = 0)]]>
+			</attribtue_filter>
+			<spatial_filter>
+				<![CDATA[]]>
+			</spatial_filter>
+			</Filter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58955376"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.start_date]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[STRING]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[num2str(year) // "-Jan-01 00:00:00"]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[year*|*city.year*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALRemoveComponets"/>
+			<UUID value="58960816"/>
+			<Name value="clear rwht"/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="view_name">
+				<![CDATA[timeseries]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="WaterDemandModel"/>
+			<UUID value="58965520"/>
+			<Name value="water_demand_model"/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="rainfile">
+				<![CDATA[../../../../../../data/rain_data/2000_2010_melb_rain.ixx]]>
+			</parameter>
+			<parameter name="evapofile">
+				<![CDATA[../../../../../../data/rain_data/2000-2010_eva.ixx]]>
+			</parameter>
+			<parameter name="start_date">
+				<![CDATA[2000-Jan-01 00:00:00]]>
+			</parameter>
+			<parameter name="end_date">
+				<![CDATA[2001-Jan-01 00:00:00]]>
+			</parameter>
+			<parameter name="timestep">
+				<![CDATA[86400]]>
+			</parameter>
+			<parameter name="date_from_global">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="global_viewe_name">
+				<![CDATA[city]]>
+			</parameter>
+			<parameter name="start_date_name">
+				<![CDATA[start_date]]>
+			</parameter>
+			<parameter name="end_data_name">
+				<![CDATA[end_date]]>
+			</parameter>
+			<parameter name="from_rain_station">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="to_rain_station">
+				<![CDATA[0]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58972400"/>
+			<Name value="Total water demand"/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_outdoor_demand_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[outdoor]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[outdoor*|*city.parcel.outdoor_demand_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58980192"/>
+			<Name value=""/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[vecsum(d)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.total_demand_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58985488"/>
+			<Name value="Total water demand"/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_roof_runoff_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[runoff]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[runoff*|*city.parcel.run_off_roof_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58991504"/>
+			<Name value="provided water"/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.collected_water_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[nonpot]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[nonpot*|*city.parcel.rwht.provided_volume_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58997808"/>
+			<Name value=""/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_roof_runoff]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[vecsum(d)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.total_roof_runoff_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59003440"/>
+			<Name value="provided water"/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_collected_water]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[vecsum(nonpot)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[nonpot*|*city.collected_water_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59009760"/>
+			<Name value="Total water demand"/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_demand_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[outdoor + pot + nonpot]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[nonpot*|*city.parcel.non_potable_demand_daily*||*outdoor*|*city.parcel.outdoor_demand_daily*||*pot*|*city.parcel.potable_demand_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59015344"/>
+			<Name value="provided water"/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_outdoor_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[vecsum(nonpot)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[nonpot*|*city.total_outdoor_demand_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALLogAttriubtes"/>
+			<UUID value="59021952"/>
+			<Name value=""/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="leadingViewName">
+				<![CDATA[city]]>
+			</parameter>
+			<parameter name="attributeNames">
+				<![CDATA[year*|*MEL_total_demand_restricted*|*MEL_total_demand_savings*|*dam_volume*|*inflow*|*restriction*|*rwht_tanks*|*total_rwht*|*]]>
+			</parameter>
+			<parameter name="printFeatureID">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="excelFriendly">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="file_name">
+				<![CDATA[../../../../../../Downloads]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="59027760"/>
+			<Name value="Upscaling to Melbourne"/>
+			<GroupUUID value="58667552"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[i*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[o*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59120144"/>
+			<Name value="City total residential demand"/>
+			<GroupUUID value="59027760"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[(d*119.66)/1000000]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.total_demand*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59126672"/>
+			<Name value="Coefficient for adjusting demand"/>
+			<GroupUUID value="59027760"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[d*1.7361]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.MEL_total_demand*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59132848"/>
+			<Name value="City total demand"/>
+			<GroupUUID value="59027760"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[rd + (rd*25/65.0)+(rd*10/65.0)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[rd*|*city.MEL_total_demand*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="59138672"/>
+			<Name value="Upscaling to Melbourne"/>
+			<GroupUUID value="58580288"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[i*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[o*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59229760"/>
+			<Name value="City total residential demand"/>
+			<GroupUUID value="59138672"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand_restricted]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[(d*119.66)/1000000]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.total_demand_restricted*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59236288"/>
+			<Name value="Coefficient for adjusting demand"/>
+			<GroupUUID value="59138672"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand_restricted]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[d*1.7361]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.MEL_total_demand_restricted*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59226672"/>
+			<Name value="City total demand"/>
+			<GroupUUID value="59138672"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand_restricted]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[rd + (rd*25/65.0)+(rd*10/65.0)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[rd*|*city.MEL_total_demand_restricted*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALLogAttriubtes"/>
+			<UUID value="59241616"/>
+			<Name value=""/>
+			<GroupUUID value="0"/>
+			<DebugMode value="0"/>
+			<parameter name="leadingViewName">
+				<![CDATA[city]]>
+			</parameter>
+			<parameter name="attributeNames">
+				<![CDATA[init_rwht*|*]]>
+			</parameter>
+			<parameter name="printFeatureID">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="excelFriendly">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="file_name">
+				<![CDATA[../../../../Water]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="59252848"/>
+			<Name value="new rwht"/>
+			<GroupUUID value="58755264"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[out*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59347264"/>
+			<Name value=""/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.rwht_id]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE parcel set rwht_id=(SELECT ogc_fid from rwht WHERE rwht.parcel_id = parcel.ogc_fid)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALCopyElementToView"/>
+			<UUID value="59341504"/>
+			<Name value=""/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="from_view">
+				<![CDATA[rwht_option]]>
+			</parameter>
+			<parameter name="to_view">
+				<![CDATA[rwht]]>
+			</parameter>
+			<parameter name="add_link">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="copy_attributes">
+				<![CDATA[1]]>
+			</parameter>
+			<Filter>
+			<view_name>
+				<![CDATA[rwht_option]]>
+			</view_name>
+			<attribtue_filter>
+				<![CDATA[placed = 1]]>
+			</attribtue_filter>
+			<spatial_filter>
+				<![CDATA[]]>
+			</spatial_filter>
+			</Filter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59359344"/>
+			<Name value=""/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht.parcel_id]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[CREATE INDEX rwht_parcel_id_index ON rwht(parcel_id)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59364784"/>
+			<Name value="total rain tanks"/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.rwht_tanks]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET rwht_tanks=(SELECT count(*) from parcel WHERE parcel.rwht_id > 0)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59370528"/>
+			<Name value="building rwht id"/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[building.rwht_id]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[rwht_id]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[rwht_id*|*building.parcel.rwht_id*||*]]>
+			</parameter>
+			<Filter>
+			<view_name>
+				<![CDATA[building]]>
+			</view_name>
+			<attribtue_filter>
+				<![CDATA[rwht_id is null or rwht_id = 0]]>
+			</attribtue_filter>
+			<spatial_filter>
+				<![CDATA[]]>
+			</spatial_filter>
+			</Filter>
+		</Node>
+		<Node>
+			<ClassName value="GDALLogAttriubtes"/>
+			<UUID value="59353424"/>
+			<Name value=""/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="leadingViewName">
+				<![CDATA[city]]>
+			</parameter>
+			<parameter name="attributeNames">
+				<![CDATA[rwht_tanks*|*init_rwht*|*total_rwht*|*]]>
+			</parameter>
+			<parameter name="printFeatureID">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="excelFriendly">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="file_name">
+				<![CDATA[../../../../Water]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59376864"/>
+			<Name value=""/>
+			<GroupUUID value="58580288"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.annual_water_savings]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET annual_water_savings =(SELECT SUM(annual_water_savings) FROM rwht)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59383472"/>
+			<Name value=""/>
+			<GroupUUID value="58580288"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_demand_savings]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[a-b]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*city.total_demand_restricted*||*b*|*city.annual_water_savings*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59396784"/>
+			<Name value="Coefficient for adjusting demand"/>
+			<GroupUUID value="59138672"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand_savings]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[d*1.7361]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.MEL_total_demand_savings*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59402432"/>
+			<Name value="City total demand"/>
+			<GroupUUID value="59138672"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand_savings]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[rd + (rd*25/65.0)+(rd*10/65.0)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[rd*|*city.MEL_total_demand_savings*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59408288"/>
+			<Name value="City total residential demand"/>
+			<GroupUUID value="59138672"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.MEL_total_demand_savings]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[(d*119.66)/1000000]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[d*|*city.total_demand_savings*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59414688"/>
+			<Name value=""/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_rwht]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[a+b]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*city.rwht_tanks*||*b*|*city.init_rwht*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59420304"/>
+			<Name value="rwht_prefered_volume"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.rwht_prefered_volume_5]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[5]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59425552"/>
+			<Name value=""/>
+			<GroupUUID value="58580288"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.restriction]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INTEGER]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET restriction = (SELECT CASE 
+            WHEN city. dam_volume  <  400 
+                THEN 4
+            WHEN  city. dam_volume  BETWEEN  400 AND  599 
+                THEN  3
+            WHEN  city. dam_volume  BETWEEN  600 AND  799 
+                THEN  2
+            WHEN  city. dam_volume  BETWEEN  800 AND  980 
+                THEN  1
+            ELSE  0
+END
+FROM city)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59389872"/>
+			<Name value=""/>
+			<GroupUUID value="58580288"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.total_demand_restricted]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET total_demand_restricted  = (SELECT CASE 
+            WHEN city.restriction  = 1 
+                THEN (city.total_demand - city.total_outdoor_demand*0.3)
+            WHEN  city.restriction  = 2
+                THEN  (city.total_demand - city.total_outdoor_demand*0.6)
+            WHEN  city.restriction  = 3
+                THEN  (city.total_demand - city.total_outdoor_demand*0.8)
+            WHEN  city.restriction  = 4
+                THEN  (city.total_demand - city.total_outdoor_demand)
+            WHEN  city.restriction  = 0
+                THEN  city.total_demand 
+END
+FROM city)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="59432304"/>
+			<Name value="Water tariff"/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[out*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59529920"/>
+			<Name value=""/>
+			<GroupUUID value="59432304"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.annual_potable_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[vecsum(x)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[x*|*parcel.potable_demand_daily*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59536704"/>
+			<Name value=""/>
+			<GroupUUID value="59432304"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.annual_potable_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET annual_potable_demand=(SELECT parcel.annual_potable_demand FROM parcel WHERE parcel.ogc_fid = rwht_option.parcel_id)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59524432"/>
+			<Name value=""/>
+			<GroupUUID value="59432304"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.total_daily_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[(a+b)/365*1000]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*parcel.annual_potable_demand*||*b*|*parcel.annual_non_potable_demand*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59548576"/>
+			<Name value=""/>
+			<GroupUUID value="59432304"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.price]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option set price=(SELECT price FROM parcel WHERE rwht_option.parcel_id = parcel.ogc_fid)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59525568"/>
+			<Name value=""/>
+			<GroupUUID value="59432304"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.year]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[y]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[y*|*city.year*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59559312"/>
+			<Name value=""/>
+			<GroupUUID value="59432304"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.year]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET year=(SELECT city.year FROM city)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="59542352"/>
+			<Name value="Add incentives"/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[out*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59657040"/>
+			<Name value="add incentives"/>
+			<GroupUUID value="59542352"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.incentive_indoor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET incentive_indoor=(SELECT city.rwht_incentive_2 from city LIMIT 1 ) WHERE rwht_option.volume = 2]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*city.rwht_incentive*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59663568"/>
+			<Name value="add incentives"/>
+			<GroupUUID value="59542352"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.incentive_indoor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET incentive_indoor=(SELECT city.rwht_incentive_5 from city LIMIT 1 ) WHERE rwht_option.volume = 5 OR rwht_option.volume = 10]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*city.rwht_incentive*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DMContainerGroup"/>
+			<UUID value="59651008"/>
+			<Name value="Add WTP"/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="inStreams">
+				<![CDATA[in*|*]]>
+			</parameter>
+			<parameter name="outStreams">
+				<![CDATA[out*|*]]>
+			</parameter>
+			<parameter name="parameterConfig">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALLogAttriubtes"/>
+			<UUID value="59760592"/>
+			<Name value=""/>
+			<GroupUUID value="59542352"/>
+			<DebugMode value="0"/>
+			<parameter name="leadingViewName">
+				<![CDATA[city]]>
+			</parameter>
+			<parameter name="attributeNames">
+				<![CDATA[rwht_incentive_2*|*rwht_incentive_5*|*]]>
+			</parameter>
+			<parameter name="printFeatureID">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="excelFriendly">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="file_name">
+				<![CDATA[../../../../main_model]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59768272"/>
+			<Name value=""/>
+			<GroupUUID value="59651008"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.wtp]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET wtp=(SELECT potential_wtp FROM parcel WHERE rwht_option.parcel_id = parcel.ogc_fid AND parcel.potential_wtp > 0)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59773248"/>
+			<Name value=""/>
+			<GroupUUID value="59651008"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.potential_wtp]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE parcel SET potential_wtp =(SELECT household.wtp_water_restrictions FROM household WHERE (SELECT city.restriction FROM city)>0 AND household.parcel_id = parcel.OGC_FID)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59778848"/>
+			<Name value="select best option"/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.placed]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET placed=1 WHERE ogc_fid IN (SELECT ogc_fid from (SELECT ogc_fid, volume, max(net_pv_indoor, net_pv_outdoor) m_pv from rwht_option WHERE max(net_pv_indoor, net_pv_outdoor)>0  group by parcel_id))]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59753840"/>
+			<Name value="Set plumbed"/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht.plumbed]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht SET plumbed =(SELECT CASE 
+            WHEN rwht.pv_indoor  >   rwht.pv_outdoor
+                THEN 1
+            WHEN  rwht.pv_indoor  <   rwht.pv_outdoor
+                THEN  0
+END)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59755856"/>
+			<Name value=""/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.prop_indoor_rwht]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET prop_indoor_rwht = (SELECT sum(rwht.plumbed)/count(rwht.plumbed) FROM rwht)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59789600"/>
+			<Name value=""/>
+			<GroupUUID value="56826448"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.ET]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET ET = (SELECT timeseries.annual_value FROM timeseries WHERE timeseries.type = 'evapotranspiration')]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59795600"/>
+			<Name value=""/>
+			<GroupUUID value="56826448"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[timeseries.annual_value]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[vecsum(a)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*timeseries.values*||*]]>
+			</parameter>
+			<Filter>
+			<view_name>
+				<![CDATA[]]>
+			</view_name>
+			<attribtue_filter>
+				<![CDATA[]]>
+			</attribtue_filter>
+			<spatial_filter>
+				<![CDATA[]]>
+			</spatial_filter>
+			</Filter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59801248"/>
+			<Name value=""/>
+			<GroupUUID value="56826448"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.rainfall]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET rainfall = (SELECT timeseries.annual_value FROM timeseries WHERE timeseries.type = 'rainfall intensity')]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALRemoveComponets"/>
+			<UUID value="59807216"/>
+			<Name value=""/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="view_name">
+				<![CDATA[rwht_option]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59808976"/>
+			<Name value="add incentives"/>
+			<GroupUUID value="59542352"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.incentive_outdoor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET incentive_outdoor=(SELECT city.incentive_outdoor from city)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*city.rwht_incentive*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59814688"/>
+			<Name value=""/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.net_pv_indoor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[pv+wtp+r]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[pv*|*rwht_option.pv_indoor*||*r*|*rwht_option.incentive_indoor*||*wtp*|*rwht_option.wtp*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59824304"/>
+			<Name value=""/>
+			<GroupUUID value="59252848"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.net_pv_outdoor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[pv+wtp+r]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[pv*|*rwht_option.pv_outdoor*||*r*|*rwht_option.incentive_outdoor*||*wtp*|*rwht_option.wtp*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59830496"/>
+			<Name value="init_storage"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.dam_volume]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[1025]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59832672"/>
+			<Name value="init_restriction"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.restriction]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="58292464"/>
+			<Name value="scenario_id"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.scenario_id]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59847968"/>
+			<Name value="coeff_demand"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.coeff_demand]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[1.7]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59861168"/>
+			<Name value="Initialise rwht at 0.1"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[household.raintank]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[rand(100)<p ? 1 : 0]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[p*|*city.initial_rwht_percentage*||*]]>
+			</parameter>
+			<Filter>
+			<view_name>
+				<![CDATA[]]>
+			</view_name>
+			<attribtue_filter>
+				<![CDATA[]]>
+			</attribtue_filter>
+			<spatial_filter>
+				<![CDATA[]]>
+			</spatial_filter>
+			</Filter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59867952"/>
+			<Name value="init_year"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.year]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[2004]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59873120"/>
+			<Name value="init_rwht"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.initial_rwht_percentage]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[10]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59878544"/>
+			<Name value="total rain tanks"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.init_rwht]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[INT]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE city SET init_rwht=(SELECT count(*) from household WHERE household.raintank > 0)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="WaterPriceParcel"/>
+			<UUID value="59884096"/>
+			<Name value=""/>
+			<GroupUUID value="59432304"/>
+			<DebugMode value="0"/>
+			<parameter name="price">
+				<![CDATA[1]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="subsidies"/>
+			<UUID value="59891568"/>
+			<Name value=""/>
+			<GroupUUID value="59542352"/>
+			<DebugMode value="0"/>
+		</Node>
+		<Node>
+			<ClassName value="inflow"/>
+			<UUID value="59898384"/>
+			<Name value=""/>
+			<GroupUUID value="56826448"/>
+			<DebugMode value="0"/>
+			<parameter name="rule">
+				<![CDATA[1]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="NewRwhtModule"/>
+			<UUID value="59903760"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="quartile">
+				<![CDATA[2]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59918608"/>
+			<Name value=""/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.perc_rwht]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[a/b*100]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[a*|*city.total_rwht*||*b*|*city.households*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59856640"/>
+			<Name value="init_outdoor_factor"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.outdoor_factor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[1.2]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59850720"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.outdoor_demand_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE parcel SET outdoor_demand_daily = dm_multiply_vector(outdoor_demand_daily, (SELECT city.outdoor_factor FROM city))]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59904752"/>
+			<Name value="init_cost_factor"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.cost_factor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0.6]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59924400"/>
+			<Name value="init_indoor_factor"/>
+			<GroupUUID value="56807952"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[city.indoor_factor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[0.4]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59929840"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.nonpotable_demand_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE parcel SET nonpotable_demand_daily = dm_multiply_vector(nonpotable_demand_daily, (SELECT city.indoor_factor FROM city))]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59941536"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[rwht_option.cost_factor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE rwht_option SET cost_factor =(SELECT cost_factor FROM city)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALPublishResults"/>
+			<UUID value="59935440"/>
+			<Name value="rs_city"/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="sink">
+				<![CDATA[PG:dbname=complex_agents host=www.dance4water.org port=5432 user=postgres password=rejudo01]]>
+			</parameter>
+			<parameter name="driver_name">
+				<![CDATA[]]>
+			</parameter>
+			<parameter name="view_name">
+				<![CDATA[city]]>
+			</parameter>
+			<parameter name="layer_name">
+				<![CDATA[abm_sensitivity1608]]>
+			</parameter>
+			<parameter name="steps">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="targetEPSG">
+				<![CDATA[4283]]>
+			</parameter>
+			<parameter name="overwrite">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="append">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="scenario_id_as_prefix">
+				<![CDATA[0]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_ExportSimulationDB"/>
+			<UUID value="59948592"/>
+			<Name value=""/>
+			<GroupUUID value="55969264"/>
+			<DebugMode value="0"/>
+			<parameter name="steps">
+				<![CDATA[1]]>
+			</parameter>
+			<parameter name="file_name">
+				<![CDATA[../../simulation_results/water_supply/test2/export]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59959328"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.outdoor_demand_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[x*y]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[x*|*parcel.outdoor_demand_daily*||*y*|*parcel.outdoor_factor*||*]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59965168"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.indoor_factor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE parcel SET indoor_factor = (SELECT indoor_factor FROM city)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="DM_SQliteCalculator"/>
+			<UUID value="59967328"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.outdoor_factor]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLE]]>
+			</parameter>
+			<parameter name="query">
+				<![CDATA[UPDATE parcel SET outdoor_factor = (SELECT outdoor_factor FROM city)]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[]]>
+			</parameter>
+		</Node>
+		<Node>
+			<ClassName value="GDALAttributeCalculator"/>
+			<UUID value="59978752"/>
+			<Name value=""/>
+			<GroupUUID value="58843296"/>
+			<DebugMode value="0"/>
+			<parameter name="attribute">
+				<![CDATA[parcel.non_potable_demand_daily]]>
+			</parameter>
+			<parameter name="attribute_type">
+				<![CDATA[DOUBLEVECTOR]]>
+			</parameter>
+			<parameter name="equation">
+				<![CDATA[x*y]]>
+			</parameter>
+			<parameter name="variables">
+				<![CDATA[x*|*parcel.non_potable_demand_daily*||*y*|*parcel.indoor_factor*||*]]>
+			</parameter>
+		</Node>
+	</Nodes>
+	<Links>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56651168"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58298768"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58293520"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58571024"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58278992"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58293520"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56654976"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56651168"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58273120"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58283984"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58287696"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58278992"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58298768"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58287696"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58283984"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56807952"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58571024"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58273120"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58303648"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56654976"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56660208"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58303648"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58938384"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58955376"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58944912"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58938384"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58960816"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58843296"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58955376"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58960816"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58965520"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58932736"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58997808"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58980192"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58980192"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58985488"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59009760"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58667552"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58985488"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58991504"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58972400"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59009760"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58991504"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58972400"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59015344"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58997808"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59003440"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59015344"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56826448"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58580288"/>
+				<PortName value = "ou"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56826448"/>
+				<PortName value = "ou"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56839232"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59126672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59120144"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59132848"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59126672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59120144"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59027760"/>
+				<PortName value = "i"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59027760"/>
+				<PortName value = "o"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59132848"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58667552"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59027760"/>
+				<PortName value = "o"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59236288"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59229760"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59226672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59236288"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59229760"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59138672"/>
+				<PortName value = "i"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58580288"/>
+				<PortName value = "ou"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59138672"/>
+				<PortName value = "o"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59027760"/>
+				<PortName value = "i"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59003440"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58574672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "55969264"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "55969264"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59241616"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59370528"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59347264"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59347264"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59359344"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59364784"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59370528"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59252848"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58755264"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59383472"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59376864"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59138672"/>
+				<PortName value = "i"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59383472"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59396784"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59408288"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59402432"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59396784"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59408288"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59226672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59138672"/>
+				<PortName value = "o"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59402432"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59414688"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59364784"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59353424"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59414688"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59420304"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56660208"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58755264"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59252848"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58580288"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58667552"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59425552"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58580288"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59389872"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59425552"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59376864"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59389872"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59524432"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59529920"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59525568"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59524432"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59536704"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59525568"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59548576"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59559312"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59529920"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59432304"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59432304"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59548576"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59542352"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59252848"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59760592"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59657040"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59542352"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59760592"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59768272"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59773248"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59773248"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59651008"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59651008"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59768272"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59651008"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59542352"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58667552"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58755264"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59252848"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59353424"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59341504"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59778848"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59801248"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59795600"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59789600"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59801248"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59795600"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56826448"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59359344"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59753840"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59753840"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59341504"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59808976"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59663568"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59657040"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59808976"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59814688"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59651008"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59824304"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59814688"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59778848"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59824304"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56807952"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58259472"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59832672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59830496"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59847968"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58292464"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59830496"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59847968"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59861168"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59873120"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59873120"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59867952"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59867952"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59832672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59878544"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59861168"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58292464"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59420304"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59241616"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56807952"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59884096"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59536704"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59559312"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59884096"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59891568"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59542352"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59663568"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59891568"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59898384"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59789600"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56839232"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59898384"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58843296"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58574672"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59918608"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59755856"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59021952"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59918608"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58755264"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58843296"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58843296"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59903760"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59904752"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59878544"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59856640"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59904752"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59924400"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59856640"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "56807952"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59924400"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59929840"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59850720"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59941536"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59432304"/>
+				<PortName value = "out"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59903760"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59941536"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59755856"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "56826448"/>
+				<PortName value = "ou"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58932736"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58944912"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59432304"/>
+				<PortName value = "in"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58948976"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59965168"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "58965520"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59967328"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59965168"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59959328"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59967328"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59978752"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59959328"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "58948976"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59978752"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "55969264"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59807216"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59948592"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59021952"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+		<Link>
+			<BackLink value = "0"/>
+			<InPort>
+				<UUID value = "59807216"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</InPort>
+			<OutPort>
+				<UUID value = "59948592"/>
+				<PortName value = "city"/>
+				<PortType value = "0"/>
+			</OutPort>
+		</Link>
+	</Links>
+</DynaMindCore>
+<DynaMindGUI>
+	<GUI_Nodes>
+		<GUI_Node>
+			<GUI_UUID value="58259472"/>
+			<GUI_PosX value="1099.39"/>
+			<GUI_PosY value="9.23"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="55969264"/>
+			<GUI_PosX value="2546.98"/>
+			<GUI_PosY value="0.729306"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="56826448"/>
+			<GUI_PosX value="4476.39"/>
+			<GUI_PosY value="804.089"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="56839232"/>
+			<GUI_PosX value="3541.34"/>
+			<GUI_PosY value="321.976"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="56807952"/>
+			<GUI_PosX value="1897.65"/>
+			<GUI_PosY value="11.8262"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="56651168"/>
+			<GUI_PosX value="5090.32"/>
+			<GUI_PosY value="932.541"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="56654976"/>
+			<GUI_PosX value="5411.63"/>
+			<GUI_PosY value="927.672"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="56660208"/>
+			<GUI_PosX value="6088.32"/>
+			<GUI_PosY value="942.277"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58273120"/>
+			<GUI_PosX value="1852.91"/>
+			<GUI_PosY value="937.409"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58278992"/>
+			<GUI_PosX value="4063.11"/>
+			<GUI_PosY value="937.409"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58283984"/>
+			<GUI_PosX value="986.382"/>
+			<GUI_PosY value="952.014"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58287696"/>
+			<GUI_PosX value="4413.63"/>
+			<GUI_PosY value="927.672"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58293520"/>
+			<GUI_PosX value="3667.45"/>
+			<GUI_PosY value="927.758"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58298768"/>
+			<GUI_PosX value="4769.9"/>
+			<GUI_PosY value="930.809"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58303648"/>
+			<GUI_PosX value="5761.81"/>
+			<GUI_PosY value="938.46"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58571024"/>
+			<GUI_PosX value="2804.68"/>
+			<GUI_PosY value="926.865"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58574672"/>
+			<GUI_PosX value="2853.45"/>
+			<GUI_PosY value="665.505"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58580288"/>
+			<GUI_PosX value="4206.13"/>
+			<GUI_PosY value="806.194"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58667552"/>
+			<GUI_PosX value="3848.38"/>
+			<GUI_PosY value="670.128"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58755264"/>
+			<GUI_PosX value="3520.35"/>
+			<GUI_PosY value="667.432"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58843296"/>
+			<GUI_PosX value="3151.3"/>
+			<GUI_PosY value="662.062"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58932736"/>
+			<GUI_PosX value="1272.47"/>
+			<GUI_PosY value="830.448"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58938384"/>
+			<GUI_PosX value="599.958"/>
+			<GUI_PosY value="831.559"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58944912"/>
+			<GUI_PosX value="961.607"/>
+			<GUI_PosY value="829.252"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58948976"/>
+			<GUI_PosX value="3277.18"/>
+			<GUI_PosY value="1038.04"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58955376"/>
+			<GUI_PosX value="250.325"/>
+			<GUI_PosY value="834.825"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58960816"/>
+			<GUI_PosX value="8.7372e-23"/>
+			<GUI_PosY value="835.534"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58965520"/>
+			<GUI_PosX value="1515.79"/>
+			<GUI_PosY value="828.766"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58972400"/>
+			<GUI_PosX value="2789.27"/>
+			<GUI_PosY value="400.219"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58980192"/>
+			<GUI_PosX value="4064.35"/>
+			<GUI_PosY value="421.77"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58985488"/>
+			<GUI_PosX value="3676.44"/>
+			<GUI_PosY value="414.586"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58991504"/>
+			<GUI_PosX value="3281.34"/>
+			<GUI_PosY value="403.811"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58997808"/>
+			<GUI_PosX value="3177.18"/>
+			<GUI_PosY value="630.093"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59003440"/>
+			<GUI_PosX value="4042.8"/>
+			<GUI_PosY value="622.909"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59009760"/>
+			<GUI_PosX value="2314.5"/>
+			<GUI_PosY value="387.993"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59015344"/>
+			<GUI_PosX value="3566.87"/>
+			<GUI_PosY value="619.314"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59021952"/>
+			<GUI_PosX value="6738.42"/>
+			<GUI_PosY value="816.925"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59027760"/>
+			<GUI_PosX value="4412.68"/>
+			<GUI_PosY value="631.573"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59120144"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59126672"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59132848"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59138672"/>
+			<GUI_PosX value="4394.92"/>
+			<GUI_PosY value="260.506"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59229760"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59236288"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59226672"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59241616"/>
+			<GUI_PosX value="2231.04"/>
+			<GUI_PosY value="-6.4388e-46"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59252848"/>
+			<GUI_PosX value="3598.16"/>
+			<GUI_PosY value="320.572"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59347264"/>
+			<GUI_PosX value="6371.62"/>
+			<GUI_PosY value="1019.27"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59341504"/>
+			<GUI_PosX value="5304.92"/>
+			<GUI_PosY value="852.207"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59359344"/>
+			<GUI_PosX value="5889.01"/>
+			<GUI_PosY value="1021.67"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59364784"/>
+			<GUI_PosX value="7388.99"/>
+			<GUI_PosY value="1019.07"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59370528"/>
+			<GUI_PosX value="7102.37"/>
+			<GUI_PosY value="1020.1"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59353424"/>
+			<GUI_PosX value="8387.38"/>
+			<GUI_PosY value="1018.73"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59376864"/>
+			<GUI_PosX value="3433.57"/>
+			<GUI_PosY value="241.418"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59383472"/>
+			<GUI_PosX value="4128.27"/>
+			<GUI_PosY value="254.276"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59396784"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59402432"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59408288"/>
+			<GUI_PosX value="3539.95"/>
+			<GUI_PosY value="314.017"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59414688"/>
+			<GUI_PosX value="8075.85"/>
+			<GUI_PosY value="1019.08"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59420304"/>
+			<GUI_PosX value="6485.98"/>
+			<GUI_PosY value="940"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59425552"/>
+			<GUI_PosX value="2531.65"/>
+			<GUI_PosY value="229.15"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59389872"/>
+			<GUI_PosX value="2942.62"/>
+			<GUI_PosY value="243.205"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59432304"/>
+			<GUI_PosX value="3825.09"/>
+			<GUI_PosY value="1038.16"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59529920"/>
+			<GUI_PosX value="1117.49"/>
+			<GUI_PosY value="495.443"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59536704"/>
+			<GUI_PosX value="2152.72"/>
+			<GUI_PosY value="547.39"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59524432"/>
+			<GUI_PosX value="1504.87"/>
+			<GUI_PosY value="501.388"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59548576"/>
+			<GUI_PosX value="4145.53"/>
+			<GUI_PosY value="552.544"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59525568"/>
+			<GUI_PosX value="1901.14"/>
+			<GUI_PosY value="532.12"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59559312"/>
+			<GUI_PosX value="3621.46"/>
+			<GUI_PosY value="547.866"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59542352"/>
+			<GUI_PosX value="3182.65"/>
+			<GUI_PosY value="844.159"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59657040"/>
+			<GUI_PosX value="4775.55"/>
+			<GUI_PosY value="314.892"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59663568"/>
+			<GUI_PosX value="2888.95"/>
+			<GUI_PosY value="314.439"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59651008"/>
+			<GUI_PosX value="3443.81"/>
+			<GUI_PosY value="848.641"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59760592"/>
+			<GUI_PosX value="5773.58"/>
+			<GUI_PosY value="313.465"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59768272"/>
+			<GUI_PosX value="4570.68"/>
+			<GUI_PosY value="501.62"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59773248"/>
+			<GUI_PosX value="3221.38"/>
+			<GUI_PosY value="502.952"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59778848"/>
+			<GUI_PosX value="3579.61"/>
+			<GUI_PosY value="1100.19"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59753840"/>
+			<GUI_PosX value="5773.45"/>
+			<GUI_PosY value="847.866"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59755856"/>
+			<GUI_PosX value="5198.24"/>
+			<GUI_PosY value="768.67"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59789600"/>
+			<GUI_PosX value="2330.79"/>
+			<GUI_PosY value="258.977"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59795600"/>
+			<GUI_PosX value="1076.59"/>
+			<GUI_PosY value="247.792"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59801248"/>
+			<GUI_PosX value="1383.46"/>
+			<GUI_PosY value="247.299"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59807216"/>
+			<GUI_PosX value="7844.18"/>
+			<GUI_PosY value="817.042"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59808976"/>
+			<GUI_PosX value="4030.66"/>
+			<GUI_PosY value="309.285"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59814688"/>
+			<GUI_PosX value="3664.79"/>
+			<GUI_PosY value="844.081"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59824304"/>
+			<GUI_PosX value="4056.13"/>
+			<GUI_PosY value="837.628"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59830496"/>
+			<GUI_PosX value="4450.42"/>
+			<GUI_PosY value="1650.74"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59832672"/>
+			<GUI_PosX value="4749.87"/>
+			<GUI_PosY value="1647.06"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="58292464"/>
+			<GUI_PosX value="3860.35"/>
+			<GUI_PosY value="1651.05"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59847968"/>
+			<GUI_PosX value="4146.94"/>
+			<GUI_PosY value="1648.31"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59861168"/>
+			<GUI_PosX value="5829.33"/>
+			<GUI_PosY value="1661.64"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59867952"/>
+			<GUI_PosX value="5078.6"/>
+			<GUI_PosY value="1644.42"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59873120"/>
+			<GUI_PosX value="5406.03"/>
+			<GUI_PosY value="1659.02"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59878544"/>
+			<GUI_PosX value="6253.85"/>
+			<GUI_PosY value="1660.21"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59884096"/>
+			<GUI_PosX value="3295.91"/>
+			<GUI_PosY value="554.255"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59891568"/>
+			<GUI_PosX value="2575.04"/>
+			<GUI_PosY value="301.527"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59898384"/>
+			<GUI_PosX value="3246.76"/>
+			<GUI_PosY value="323.882"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59903760"/>
+			<GUI_PosX value="4658.65"/>
+			<GUI_PosY value="1034.8"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59918608"/>
+			<GUI_PosX value="6441.58"/>
+			<GUI_PosY value="975.703"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59856640"/>
+			<GUI_PosX value="7306.87"/>
+			<GUI_PosY value="1662.49"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59850720"/>
+			<GUI_PosX value="1972.71"/>
+			<GUI_PosY value="1308.53"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59904752"/>
+			<GUI_PosX value="6996.65"/>
+			<GUI_PosY value="1662.31"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59924400"/>
+			<GUI_PosX value="7614.54"/>
+			<GUI_PosY value="1662.96"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59929840"/>
+			<GUI_PosX value="1953.88"/>
+			<GUI_PosY value="1363.57"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59941536"/>
+			<GUI_PosX value="4060.23"/>
+			<GUI_PosY value="1026.07"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59935440"/>
+			<GUI_PosX value="7166.67"/>
+			<GUI_PosY value="1248.67"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59948592"/>
+			<GUI_PosX value="7136.97"/>
+			<GUI_PosY value="824.77"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59959328"/>
+			<GUI_PosX value="2588.11"/>
+			<GUI_PosY value="820.048"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59965168"/>
+			<GUI_PosX value="1988.04"/>
+			<GUI_PosY value="829.114"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59967328"/>
+			<GUI_PosX value="1988.72"/>
+			<GUI_PosY value="965.221"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+		<GUI_Node>
+			<GUI_UUID value="59978752"/>
+			<GUI_PosX value="2815.7"/>
+			<GUI_PosY value="1027.55"/>
+			<GUI_Minimized value="0"/>
+		</GUI_Node>
+	</GUI_Nodes>
+</DynaMindGUI>
+</DynaMind>
